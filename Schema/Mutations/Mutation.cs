@@ -1,4 +1,6 @@
 ﻿using GraphQLTutorial.Schema.Queries;
+using GraphQLTutorial.Schema.Subscriptions;
+using HotChocolate.Subscriptions;
 
 namespace GraphQLTutorial.Schema.Mutations
 {
@@ -12,20 +14,21 @@ namespace GraphQLTutorial.Schema.Mutations
             _courses = new List<CourseResult>();
         }
 
-        public CourseResult CreateCourse(string name, Subject subject, Guid instructorId)
+        public async Task<CourseResult> CreateCourse(CourseInputType courseInput, [Service] ITopicEventSender topicEventSender )
         {
             CourseResult courseType = new CourseResult()
             {
                 Id = Guid.NewGuid(),
-                Name = name,
-                Subject = subject,
-                InstructorId = instructorId
+                Name = courseInput.Name,
+                Subject = courseInput.Subject,
+                InstructorId = courseInput.InstructorId
             };
             _courses.Add(courseType);
+            await topicEventSender.SendAsync(nameof(Subscription.CourseCreated), courseType);
             return courseType;
         }
 
-        public CourseResult UpdateCourse(Guid id, string name, Subject subject, Guid instructorId)
+        public async Task<CourseResult> UpdateCourse(Guid id, CourseInputType courseInput, [Service] ITopicEventSender topicEventSender)
         {
             CourseResult course = _courses.FirstOrDefault(course => course.Id == id);
 
@@ -33,9 +36,14 @@ namespace GraphQLTutorial.Schema.Mutations
             {
                 throw new GraphQLException("COURSE_NOT_FOUND");
             }
-            course.Name = name;
-            course.Subject = subject;
-            course.InstructorId = id;
+            course.Name = courseInput.Name;
+            course.Subject = courseInput.Subject;
+            course.InstructorId = courseInput.InstructorId;
+
+            string updateCourseTopic = $"{course.Id}_{nameof(Subscription.CourseUpdated)}";
+            await topicEventSender.SendAsync(updateCourseTopic, course);
+
+            
             return course;
         }
         

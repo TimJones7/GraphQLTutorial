@@ -1,4 +1,4 @@
-﻿namespace GraphQLTutorial.Schema
+﻿namespace GraphQLTutorial.Schema.Queries
 {
     public enum Subject
     {

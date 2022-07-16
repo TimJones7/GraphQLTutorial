@@ -1,11 +1,15 @@
-using GraphQLTutorial.Schema;
+using GraphQLTutorial.Schema.Mutations;
+using GraphQLTutorial.Schema.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-//  Add GraphQL with query types
+//  Add GraphQL
+//  Register query types
+//  Add Mutations
 builder.Services.AddGraphQLServer()
-    .AddQueryType<Query>();
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>();
 
 
 

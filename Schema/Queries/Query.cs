@@ -1,6 +1,6 @@
 ﻿using Bogus;
 
-namespace GraphQLTutorial.Schema
+namespace GraphQLTutorial.Schema.Queries
 {
     public class Query
     {
@@ -32,7 +32,7 @@ namespace GraphQLTutorial.Schema
                 .RuleFor(c => c.Students, f => _studentFaker.Generate(3));
         }
 
-        
+
         //  Get all of the courses
         public IEnumerable<CourseType> GetCourses()
         {

@@ -1,12 +1,7 @@
-﻿namespace GraphQLTutorial.Schema.Queries
-{
-    public enum Subject
-    {
-        Mathematics,
-        Science,
-        History
-    }
+﻿using GraphQLTutorial.Models;
 
+namespace GraphQLTutorial.Schema.Queries
+{
     public class CourseType
     {
         public Guid Id { get; set; }
@@ -19,11 +14,5 @@
         public InstructorType Instructor { get; set; }
 
         public IEnumerable<StudentType> Students { get; set; }
-
-
-        public string Description()
-        {
-            return $"{Name}this is a course";
-        }
     }
 }

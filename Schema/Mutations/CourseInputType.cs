@@ -1,4 +1,5 @@
-﻿using GraphQLTutorial.Schema.Queries;
+﻿using GraphQLTutorial.Models;
+using GraphQLTutorial.Schema.Queries;
 
 namespace GraphQLTutorial.Schema.Mutations
 {

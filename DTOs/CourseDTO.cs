@@ -1,13 +1,20 @@
 ﻿using GraphQLTutorial.Models;
-using GraphQLTutorial.Schema.Queries;
 
-namespace GraphQLTutorial.Schema.Mutations
+namespace GraphQLTutorial.DTOs
 {
-    public class CourseResult
+    public class CourseDTO
     {
+
         public Guid Id { get; set; }
+
         public string Name { get; set; }
+
         public Subject Subject { get; set; }
+
         public Guid InstructorId { get; set; }
+        public InstructorDTO Instructor { get; set; }
+
+        public IEnumerable<StudentDTO> Students { get; set; }
+
     }
 }

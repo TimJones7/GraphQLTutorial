@@ -1,6 +1,9 @@
 using GraphQLTutorial.Schema.Mutations;
 using GraphQLTutorial.Schema.Queries;
 using GraphQLTutorial.Schema.Subscriptions;
+using GraphQLTutorial.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +18,15 @@ builder.Services.AddGraphQLServer()
 
 builder.Services.AddInMemorySubscriptions();
 
+builder.Services.AddPooledDbContextFactory<SchoolDbContext>(options =>
+{
+    string dbConnection = builder.Configuration.GetConnectionString("default");
+    options.UseSqlite(dbConnection);
+});
+
+
 var app = builder.Build();
+
 
 
 
@@ -30,6 +41,14 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGraphQL();
 });
 
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    IDbContextFactory<SchoolDbContext> contextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<SchoolDbContext>>();
 
+    using (SchoolDbContext context = contextFactory.CreateDbContext())
+    {
+        context.Database.Migrate();
+    }
+}
 
 app.Run();

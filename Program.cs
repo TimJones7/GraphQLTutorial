@@ -2,10 +2,13 @@ using GraphQLTutorial.Schema.Mutations;
 using GraphQLTutorial.Schema.Queries;
 using GraphQLTutorial.Schema.Subscriptions;
 using GraphQLTutorial.Services;
+using GraphQLTutorial.Services.Courses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<CourseRepository>();
 
 
 //  Add GraphQL

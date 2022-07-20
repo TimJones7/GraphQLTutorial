@@ -18,8 +18,6 @@ namespace GraphQLTutorial.Services.Courses
             using (SchoolDbContext context = _contextFactory.CreateDbContext())
             {
                 var courses = await context.Courses
-                    .Include(c => c.Instructor)
-                    .Include(c => c.Students)
                     .ToListAsync();
                 return courses;
             }
@@ -29,8 +27,6 @@ namespace GraphQLTutorial.Services.Courses
             using (SchoolDbContext context = _contextFactory.CreateDbContext())
             {
                 var course = await context.Courses
-                    .Include(c => c.Instructor)
-                    .Include(c => c.Students)
                     .FirstOrDefaultAsync(c => c.Id == id);
                 return course;
             }
